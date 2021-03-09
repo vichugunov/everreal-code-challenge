@@ -10,7 +10,7 @@
     "dev": "npm run copy-assets && npm run watch",
     "watch": "npx tsc-watch -p tsconfig.json --preserveWatchOutput --skipLibCheck --onSuccess \"npm run execute\" ",
     "execute": "node ./bin/main",
-    "test": "mkdir -p report/unit && npx jest --verbose --config jest.config.js",
+    "test": "mkdir -p report/unit && npx jest --verbose --collect-coverage --config jest.config.js",
     "lint": "npx eslint --ext .ts",
     "build": "npm run copy-assets && npm run compile",
     "compile": "npx tsc -p tsconfig.json  --preserveWatchOutput --skipLibCheck",

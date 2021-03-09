@@ -14,7 +14,6 @@ module.exports = {
   "clearMocks": true,
   "coverageDirectory": "report/unit",
   "preset": "ts-jest",
-  "collectCoverage": true,
   "automock": false,
   "testEnvironment": "node",
   "transform": {
