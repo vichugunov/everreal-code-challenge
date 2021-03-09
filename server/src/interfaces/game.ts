@@ -10,6 +10,8 @@ export interface IGameMove extends IGameUserMove {
   isGameComplete: boolean
   // to draw a nice line border on the frontend
   connectedBeforeApply: Array<Vertex>
+  connectedAfterApply: Array<Vertex>
+  createdAtMs: number
 }
 
 export type GameMoves = Array<IGameMove>
@@ -18,6 +20,7 @@ export interface IGame {
   name?: string
   board: GameBoard
   moves: GameMoves
+  createdAtMs?: number
 }
 
 // to draw a nice line border on the frontend
@@ -32,4 +35,12 @@ export interface IGameCollection {
 
 export interface IUserGame extends IGame {
   gameId: string
+}
+
+export interface IGameStat {
+  name?: string
+  gameId: string
+  currentBoard: GameBoard
+  connectedVertices: Array<Vertex>
+  lastChangeAtMs: number
 }

@@ -23,7 +23,8 @@ export const generateGame = (name?: string): IUserGame => {
 
   const game = {
     board,
-    moves: []
+    moves: [],
+    createdAtMs: Date.now()
   }
 
   games[gameId] = game
@@ -58,6 +59,14 @@ export const getGame = (gameId: string): IGame => {
   }
 
   return games[gameId]
+}
+
+/**
+ * Return all game identifiers
+ */
+
+export const getGameIds = (): string[] => {
+  return Object.keys(games)
 }
 
 /**
@@ -268,7 +277,9 @@ export const makeMove = (board: GameBoard, color: string): IGameMove => {
     color,
     result,
     isGameComplete: isGameComplete(result),
-    connectedBeforeApply
+    connectedBeforeApply,
+    connectedAfterApply: getConnectedVertices(result),
+    createdAtMs: Date.now()
   }
 }
 

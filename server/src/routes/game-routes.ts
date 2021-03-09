@@ -1,7 +1,7 @@
 import * as Express from 'express'
-import { IGameResponse, IGame } from '../interfaces'
+import { IGameResponse, IGame, IGameStat, IGameMove, GameBoard } from '../interfaces'
 import { authMiddleware } from '../services/user-service'
-import { generateUserGame, recordUserMove, getGame, solveGame } from './../services/game-service'
+import { generateUserGame, recordUserMove, getGame, solveGame, getGameIds, getConnectedVertices } from './../services/game-service'
 
 const router = Express.Router()
 
@@ -44,6 +44,25 @@ router.get('/:gameId/ai-solution-steps', authMiddleware(), async (req, res) => {
   } catch (e) {
     res.status(400).send(e.message)
   }
+})
+
+router.get('/', authMiddleware(), (req, res) => {
+  const gameIds = getGameIds()
+  const games = gameIds.map(getGame)
+
+  const gameStats: Array<IGameStat> = games.map((game, idx) => {
+    const lastMove: IGameMove | null = game.moves.length ? game.moves[game.moves.length - 1] : null
+
+    return {
+      name: game.name,
+      gameId: gameIds[idx],
+      currentBoard: lastMove == null ? game.board : lastMove.result,
+      connectedVertices: lastMove == null ? getConnectedVertices(game.board) : lastMove.connectedAfterApply,
+      lastChangeAtMs: lastMove == null ? game.createdAtMs as number : lastMove.createdAtMs
+    }
+  })
+
+  res.send(gameStats)
 })
 
 export default router

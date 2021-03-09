@@ -186,7 +186,9 @@ describe('game service: gameplay', () => {
           result: allZerosBoard,
           color: '0',
           isGameComplete: true,
-          connectedBeforeApply: getConnectedVertices(allZerosBoard)
+          connectedAfterApply: getConnectedVertices(allZerosBoard),
+          connectedBeforeApply: getConnectedVertices(allZerosBoard),
+          createdAtMs: Date.now()
         }
       ]
     }

@@ -63,6 +63,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GameSettings'
+  /games:
+    get:
+      tags:
+        - Game
+      summary: get all games stats
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameStat'
   /games/new:
     get:
       tags:
@@ -204,6 +218,7 @@ components:
         - board
         - moves
         - connectedVertices
+        - createdAtMs
       properties:
         gameId:
           type: string
@@ -217,6 +232,8 @@ components:
           $ref: '#/components/schemas/GameMove'
         connectedVertices:
           $ref: '#/components/schemas/ConnectedVertices'
+        createdAtMs:
+          $ref: '#/components/schemas/TimestampMs'
     GameId:
       type: string
       description: unique game identifier
@@ -232,6 +249,30 @@ components:
       description: these vertices are connected to each other in terms of color (starting point - top left corner)
       items:
         $ref: '#/components/schemas/Vertex'
+    TimestampMs:
+      type: number
+      description: timestamp in ms since 1970
+      example: 1615332125853
+    GameStat:
+      type: object
+      required:
+        - gameId
+        - currentBoard
+        - connectedVertices
+        - lastChangeAtMs
+      properties:
+        gameId:
+          type: string
+          description: uuid of the game
+        name:
+          type: string
+          description: user-friendly game name. optional
+        currentBoard:
+          $ref: '#/components/schemas/GameBoard'
+        connectedVertices:
+          $ref: '#/components/schemas/ConnectedVertices'
+        lastChangeAtMs:
+          $ref: '#/components/schemas/TimestampMs'
   responses:
     BadRequest:
       description: Bad request
