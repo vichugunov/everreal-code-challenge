@@ -8,6 +8,7 @@ module.exports = {
     "!src/interfaces/**",
     "!src/routes/**",
     "!src/helpers/paths.ts",
+    "!src/helpers/constants.ts",
     "!src/main.ts"
   ],
   "clearMocks": true,

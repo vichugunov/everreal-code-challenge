@@ -10,7 +10,7 @@ import path from 'path'
 import YAML from 'yamljs'
 
 import userRouter from './routes/user-routes'
-import testRouter from './routes/test-routes'
+import settingsRouter from './routes/settings-routes'
 
 const swaggerDocument = YAML.load(path.resolve(paths.assetPath, 'swagger.yaml'))
 
@@ -45,7 +45,7 @@ app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swagger
 
 // ---------------------
 app.use(userRouter)
-app.use('/test', testRouter)
+app.use('/settings', settingsRouter)
 
 app.listen(port, () => {
   console.log('server is listening to the port', port)

@@ -16,6 +16,8 @@ info:
 tags:
   - name: User
     description: All operations regarding user-defined information
+  - name: Settings
+    description: All operations regarding game settings
 
 paths:
   /login:
@@ -47,19 +49,35 @@ paths:
                 type: string
                 description: JWT token in plain text response
                 example: a.b.c
-  /test/hello:
+  /settings:
     get:
-      summary: test authentication
+      tags:
+        - Settings
+      summary: get game settings
       responses:
         '200':
           description: OK
           content:
             text/plain; charset=utf-8:
               schema:
-                type: string
-                description: test string
-                example: world
+                $ref: '#/components/schemas/GameSettings'
 components:
+  schemas:
+    GameSettings:
+      type: object
+      required:
+        - boardSize
+        - colors
+      properties:
+        boardSize:
+          type: number
+          description: board size (n x n)
+          example: 10
+        colors:
+          type: array
+          items:
+            type: string
+            example: red
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
       type: http
