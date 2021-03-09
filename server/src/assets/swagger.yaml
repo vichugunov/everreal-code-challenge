@@ -18,6 +18,8 @@ tags:
     description: All operations regarding user-defined information
   - name: Settings
     description: All operations regarding game settings
+  - name: Game
+    description: All operations regarding gameplay
 
 paths:
   /login:
@@ -58,9 +60,21 @@ paths:
         '200':
           description: OK
           content:
-            text/plain; charset=utf-8:
+            application/json:
               schema:
                 $ref: '#/components/schemas/GameSettings'
+  /game/new:
+    get:
+      tags:
+        - Game
+      summary: generate a new game
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGame'
 components:
   schemas:
     GameSettings:
@@ -78,6 +92,43 @@ components:
           items:
             type: string
             example: red
+    GameBoard:
+      type: array
+      items:
+        type: array
+        items:
+          type: string
+          description: color in a game cell
+          example: red
+    GameMove:
+      type: object
+      description: the result of a user move, which represents a full board after the move
+      required:
+        - result
+      properties:
+        delta:
+          $ref: '#/components/schemas/GameBoard'
+    Game:
+      type: object
+      required:
+        - board
+        - moves
+      properties:
+        board:
+          $ref: '#/components/schemas/GameBoard'
+        moves:
+          $ref: '#/components/schemas/GameMove'
+    GameId:
+      type: string
+      description: unique game identifier
+      example: 46bbf605-36aa-4d63-bb7e-92c2ea3e6673
+    UserGame:
+      allOf:
+        - $ref: '#/components/schemas/Game'
+        - type: object
+          properties:
+            gameId:
+              $ref: '#/components/schemas/GameId'
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
       type: http

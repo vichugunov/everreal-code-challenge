@@ -11,6 +11,7 @@ import YAML from 'yamljs'
 
 import userRouter from './routes/user-routes'
 import settingsRouter from './routes/settings-routes'
+import gameRouter from './routes/game-routes'
 
 const swaggerDocument = YAML.load(path.resolve(paths.assetPath, 'swagger.yaml'))
 
@@ -46,6 +47,7 @@ app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swagger
 // ---------------------
 app.use(userRouter)
 app.use('/settings', settingsRouter)
+app.use('/game', gameRouter)
 
 app.listen(port, () => {
   console.log('server is listening to the port', port)
