@@ -4,12 +4,15 @@ export interface IGameUserMove {
 
 export interface IGameMove extends IGameUserMove {
   result: GameBoard
+  isGameComplete: boolean
 }
 
 export type GameBoard = Array<Array<string>>
 export type GameMoves = Array<IGameMove>
+export type Vertex = [ number, number ]
 
 export interface IGame {
+  name?: string
   board: GameBoard
   moves: GameMoves
 }
