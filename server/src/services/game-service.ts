@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid'
-import { GameBoard, IUserGame, IGameMove, IGameCollection, Vertex, IGame } from './../interfaces'
+import { GameBoard, IUserGame, IGameMove, IGameCollection, Vertex, IGame, IGameResponse } from './../interfaces'
 import { getConstants } from './../helpers/constants'
 
 const games: IGameCollection = {}
@@ -21,15 +21,29 @@ export const generateGame = (name?: string): IUserGame => {
   }
 
   const game = {
-    gameId,
     board,
-    moves: [],
-    name: name || gameId
+    moves: []
   }
 
   games[gameId] = game
 
-  return game
+  return {
+    ...game,
+    gameId
+  }
+}
+
+/**
+ * Return frontend-friendly game response
+ * @param name target user game name. optional
+ * @returns game response with connected vertices for the frontend
+ */
+export const generateUserGame = (name?: string): IGameResponse => {
+  const game = generateGame(name)
+  return {
+    ...game,
+    connectedVertices: getConnectedVertices(game.board)
+  }
 }
 
 /**
@@ -240,13 +254,20 @@ export const makeMove = (board: GameBoard, color: string): IGameMove => {
   if (!colors.includes(color)) {
     throw new Error(`[move] Provided color ${color} is not present in acceptable user colors: ${JSON.stringify(colors)}`)
   }
+  const connectedBeforeApply = getConnectedVertices(board)
+
+  // no vertices match provided color -> add root vertex to fill it
+  if (connectedBeforeApply.length === 0) {
+    connectedBeforeApply.push([0, 0])
+  }
 
   const result = fillConnectedVertices(board, color)
 
   return {
     color,
     result,
-    isGameComplete: isGameComplete(result)
+    isGameComplete: isGameComplete(result),
+    connectedBeforeApply
   }
 }
 
@@ -255,7 +276,7 @@ export const makeMove = (board: GameBoard, color: string): IGameMove => {
  * @param gameId id of the game
  * @param color an artifact of a user move
  */
-export const recordUserMove = (gameId: string, color: string) => {
+export const recordUserMove = (gameId: string, color: string): IGameMove => {
   const game = getGame(gameId)
   const moves = game.moves
   const lastMove: IGameMove | null = moves.length > 0 ? moves[moves.length - 1] : null
@@ -269,6 +290,7 @@ export const recordUserMove = (gameId: string, color: string) => {
   const move = makeMove(board, color)
 
   game.moves.push(move)
+  return move
 }
 
 /**

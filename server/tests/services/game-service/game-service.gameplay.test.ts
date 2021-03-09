@@ -185,7 +185,8 @@ describe('game service: gameplay', () => {
         {
           result: allZerosBoard,
           color: '0',
-          isGameComplete: true
+          isGameComplete: true,
+          connectedBeforeApply: getConnectedVertices(allZerosBoard)
         }
       ]
     }

@@ -9,7 +9,8 @@ module.exports = {
     "!src/routes/**",
     "!src/helpers/paths.ts",
     "!src/helpers/constants.ts",
-    "!src/main.ts"
+    "!src/main.ts",
+    "!src/services/user-service.ts",
   ],
   "clearMocks": true,
   "coverageDirectory": "report/unit",

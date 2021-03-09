@@ -63,7 +63,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GameSettings'
-  /game/new:
+  /games/new:
     get:
       tags:
         - Game
@@ -74,7 +74,81 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserGame'
+                $ref: '#/components/schemas/Game'
+  /games/{gameId}/move:
+    post:
+      tags:
+        - Game
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          schema:
+            $ref: '#/components/schemas/GameId'
+      summary: make a user move
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - color
+              properties:
+                color:
+                  type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameMove'
+        '400':
+          $ref:  "#/components/responses/BadRequest"
+  /games/{gameId}/history:
+    get:
+      tags:
+        - Game
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          schema:
+            $ref: '#/components/schemas/GameId'
+      summary: get user moves history
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameMove'
+        '400':
+          $ref:  "#/components/responses/BadRequest"
+  /games/{gameId}/ai-solution-steps:
+    get:
+      tags:
+        - Game
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          schema:
+            $ref: '#/components/schemas/GameId'
+      summary: get an automated solution
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GameMove'
+        '400':
+          $ref:  "#/components/responses/BadRequest"
 components:
   schemas:
     GameSettings:
@@ -105,30 +179,59 @@ components:
       description: the result of a user move, which represents a full board after the move
       required:
         - result
+        - isGameComplete
+        - connectedBeforeApply
       properties:
-        delta:
+        result:
           $ref: '#/components/schemas/GameBoard'
+        isGameComplete:
+          type: boolean
+        connectedBeforeApply:
+          $ref: '#/components/schemas/ConnectedVertices'
     Game:
       type: object
       required:
+        - gameId
         - board
         - moves
+        - connectedVertices
       properties:
+        gameId:
+          type: string
+          description: uuid of the game
+        name:
+          type: string
+          description: user-friendly game name. optional
         board:
           $ref: '#/components/schemas/GameBoard'
         moves:
           $ref: '#/components/schemas/GameMove'
+        connectedVertices:
+          $ref: '#/components/schemas/ConnectedVertices'
     GameId:
       type: string
       description: unique game identifier
       example: 46bbf605-36aa-4d63-bb7e-92c2ea3e6673
-    UserGame:
-      allOf:
-        - $ref: '#/components/schemas/Game'
-        - type: object
-          properties:
-            gameId:
-              $ref: '#/components/schemas/GameId'
+    Vertex:
+      type: array
+      description: tuple of [i,j] of a vertex coordinate (0,0 - top left)
+      items:
+        type: number
+        example: 0
+    ConnectedVertices:
+      type: array
+      description: these vertices are connected to each other in terms of color (starting point - top left corner)
+      items:
+        $ref: '#/components/schemas/Vertex'
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        text/plain; charset=utf-8:
+          schema:
+            type: string
+            description: Error description
+            example: a.b.c
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
       type: http

@@ -47,7 +47,7 @@ app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swagger
 // ---------------------
 app.use(userRouter)
 app.use('/settings', settingsRouter)
-app.use('/game', gameRouter)
+app.use('/games', gameRouter)
 
 app.listen(port, () => {
   console.log('server is listening to the port', port)
