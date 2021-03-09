@@ -35,11 +35,11 @@ router.get('/:gameId/history', authMiddleware(), (req, res) => {
   }
 })
 
-router.get('/:gameId/ai-solution-steps', authMiddleware(), (req, res) => {
+router.get('/:gameId/ai-solution-steps', authMiddleware(), async (req, res) => {
   const gameId = req.params.gameId
 
   try {
-    const aiSteps = solveGame(gameId)
+    const aiSteps = await solveGame(gameId)
     res.send(aiSteps)
   } catch (e) {
     res.status(400).send(e.message)

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { GameBoard, IUserGame, IGameMove, IGameCollection, Vertex, IGame, IGameResponse } from './../interfaces'
 import { getConstants } from './../helpers/constants'
+import ms from 'ms'
 
 const games: IGameCollection = {}
 
@@ -297,33 +298,42 @@ export const recordUserMove = (gameId: string, color: string): IGameMove => {
  * Greedy algorithm to solve a game - always fill colors with maximum interconnected vertices
  * @param gameId Game id
  */
-export const solveGame = (gameId: string): Array<IGameMove> => {
-  const { colors } = getConstants()
+export const solveGame = (gameId: string): Promise<{executionTimeHuman: string, moves: Array<IGameMove>}> => {
+  return new Promise((resolve) => {
+    const startTime = Date.now()
 
-  const game = getGame(gameId)
-  const moves = new Array<IGameMove>()
+    const { colors } = getConstants()
+    const game = getGame(gameId)
+    const moves = new Array<IGameMove>()
 
-  // maybe we're lucky and new game is already solved
-  if (isGameComplete(game.board)) {
-    return moves
-  }
+    // maybe we're lucky and new game is already solved
+    if (isGameComplete(game.board)) {
+      resolve({
+        executionTimeHuman: ms(Date.now() - startTime, { long: true }),
+        moves
+      })
+    }
 
-  do {
-    const board = moves.length == 0 ? game.board : moves[moves.length - 1].result
-    const connectedVerticesAfterApplyColor: Array<[string, number]> = colors.map(color => {
-      return [ color, getConnectedVertices(fillConnectedVertices(board, color)).length]
+    do {
+      const board = moves.length == 0 ? game.board : moves[moves.length - 1].result
+      const connectedVerticesAfterApplyColor: Array<[string, number]> = colors.map(color => {
+        return [ color, getConnectedVertices(fillConnectedVertices(board, color)).length]
+      })
+
+      // sort descending by length of connected colors
+      connectedVerticesAfterApplyColor.sort(([colorA, appliedVerticiesLengthA], [colorB, appliedVerticiesLengthB]) => {
+        return appliedVerticiesLengthB - appliedVerticiesLengthA
+      })
+
+      const colorToUse = connectedVerticesAfterApplyColor[0][0]
+      const move = makeMove(board, colorToUse)
+
+      moves.push(move)
+    } while (moves.length > 0 && !moves[moves.length - 1].isGameComplete)
+
+    resolve({
+      executionTimeHuman: ms(Date.now() - startTime, { long: true }),
+      moves
     })
-
-    // sort descending by length of connected colors
-    connectedVerticesAfterApplyColor.sort(([colorA, appliedVerticiesLengthA], [colorB, appliedVerticiesLengthB]) => {
-      return appliedVerticiesLengthB - appliedVerticiesLengthA
-    })
-
-    const colorToUse = connectedVerticesAfterApplyColor[0][0]
-    const move = makeMove(board, colorToUse)
-
-    moves.push(move)
-  } while (moves.length > 0 && !moves[moves.length - 1].isGameComplete)
-
-  return moves
+  })
 }

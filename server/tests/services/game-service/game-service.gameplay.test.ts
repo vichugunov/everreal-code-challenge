@@ -196,7 +196,7 @@ describe('game service: gameplay', () => {
   })
   // ----
   // solveGame
-  test('should solve a game', () => {
+  test('should solve a game', async () => {
     const board = [
       ['0', '0', '1', '1'],
       ['0', '0', '0', '1'],
@@ -210,7 +210,8 @@ describe('game service: gameplay', () => {
     }
 
     setGame(gameId, game)
-    const moves = solveGame(gameId)
+    const solutionResult = await solveGame(gameId)
+    const moves = solutionResult.moves
     const lastMove = moves[moves.length - 1]
     expect(lastMove.isGameComplete).toBe(true)
 
