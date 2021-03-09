@@ -1,0 +1,69 @@
+openapi: 3.0.0
+servers:
+  - description: LOCAL
+    url: http://localhost:8080
+  - description: DEV
+    url: https://api.dcs-dashboard-focke.com
+info:
+  description: Api specification of EverReal Code challenge
+  version: "1.0.0"
+  title: EverReal Code Challenge Api
+  contact:
+    email: vichugunov@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+tags:
+  - name: User
+    description: All operations regarding user-defined information
+
+paths:
+  /login:
+    post:
+      tags:
+        - User
+      summary: login as a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - password
+              properties:
+                username:
+                  type: string
+                  example: 'everreal'
+                password:
+                  type: string
+                  example: '2021'
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+                description: JWT token in plain text response
+                example: a.b.c
+  /test/hello:
+    get:
+      summary: test authentication
+      responses:
+        '200':
+          description: OK
+          content:
+            text/plain; charset=utf-8:
+              schema:
+                type: string
+                description: test string
+                example: world
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []

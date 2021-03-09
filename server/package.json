@@ -1,0 +1,65 @@
+{
+  "name": "everreal",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "remove-artifacts": "rm -rf bin",
+    "copy-assets": "mkdir -p ./bin && cp -R ./src/assets/ ./bin/assets/",
+    "clean": "npm run remove-artifacts && rm -rf node_modules",
+    "dev": "npm run copy-assets && npm run watch",
+    "watch": "npx tsc-watch -p tsconfig.json --preserveWatchOutput --skipLibCheck --onSuccess \"npm run execute\" ",
+    "execute": "node ./bin/main",
+    "test": "mkdir -p report/unit && npx jest --verbose --config jest.config.js",
+    "lint": "npx eslint --ext .ts",
+    "build": "npm run copy-assets && npm run compile",
+    "compile": "npx tsc -p tsconfig.json  --preserveWatchOutput --skipLibCheck",
+    "execute-prod": "node ./bin/main",
+    "start": "npm run execute-prod",
+    "restart": "npm run clean && npm install && npm run build",
+    "rebuild": "npm run remove-artifacts && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vichugunov/everreal-code-challenge.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vichugunov/everreal-code-challenge/issues"
+  },
+  "homepage": "https://github.com/vichugunov/everreal-code-challenge#readme",
+  "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "1.0.1",
+    "@types/body-parser": "1.19.0",
+    "@types/cors": "2.8.10",
+    "@types/dotenv-safe": "8.1.1",
+    "@types/express": "4.17.11",
+    "@types/jest": "26.0.20",
+    "@types/lodash": "4.14.168",
+    "@types/node": "14.14.32",
+    "@types/passport": "1.0.6",
+    "@types/passport-jwt": "3.0.5",
+    "@types/swagger-ui-express": "4.1.2",
+    "@types/yamljs": "0.2.31",
+    "@typescript-eslint/eslint-plugin": "4.17.0",
+    "@typescript-eslint/parser": "4.17.0",
+    "eslint": "7.21.0",
+    "jest": "26.6.3",
+    "ts-jest": "26.5.3",
+    "tsc-watch": "4.2.9",
+    "typescript": "4.2.3"
+  },
+  "dependencies": {
+    "body-parser": "1.19.0",
+    "cors": "2.8.5",
+    "dotenv-safe": "8.2.0",
+    "express": "4.17.1",
+    "jsonwebtoken": "8.5.1",
+    "passport": "0.4.1",
+    "passport-jwt": "4.0.0",
+    "swagger-ui-express": "4.1.6",
+    "yamljs": "0.3.0"
+  }
+}

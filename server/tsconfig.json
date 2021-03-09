@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "./bin",
+    "rootDir": "./src",
+    "strict": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false
+  },
+  "include": [
+    "src/*"
+  ],
+  "exclude": [
+    "tests/*",
+    "node_modules/"
+  ]
+}
