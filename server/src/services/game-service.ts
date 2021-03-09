@@ -4,6 +4,10 @@ import { getConstants } from './../helpers/constants'
 
 const games: IGameCollection = {}
 
+/**
+ * Generate a new game
+ * @returns A new generated game
+ */
 export const generateGame = (): IUserGame => {
   const gameId = uuidv4()
   const { boardSize, colors } = getConstants()
@@ -25,4 +29,25 @@ export const generateGame = (): IUserGame => {
   games[gameId] = game
 
   return game
+}
+
+export const getGame = (gameId: string) => {
+  if (!games[gameId]) {
+    throw new Error(`Game with ${gameId} not found`)
+  }
+
+  return games[gameId]
+}
+
+export const deleteGame = (gameId: string) => {
+  if (!games[gameId]) {
+    throw new Error(`Game with ${gameId} not found`)
+  }
+
+  delete games[gameId]
+}
+
+export const deleteAllGames = () => {
+  Object.keys(games)
+        .map(deleteGame)
 }
