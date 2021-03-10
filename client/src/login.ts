@@ -27,14 +27,14 @@ const onSubmit = () => {
   login(payload)
     .then((token) => {
       setToken(token)
-      window.location.href = '/game.html'
+      window.location.href = '/game-carousel.html'
     })
 }
 
 const bindEventListeners = () => {
-  const usernameInput = document.querySelector(usernameSelector)
-  const passwordInput = document.querySelector(passwordSelector)
-  const signInBtn = document.querySelector(signInBtnSelector)
+  const usernameInput = document.querySelector(usernameSelector) as HTMLElement
+  const passwordInput = document.querySelector(passwordSelector) as HTMLElement
+  const signInBtn = document.querySelector(signInBtnSelector) as HTMLElement
 
   usernameInput.addEventListener("input", updateUserName, false);
   usernameInput.addEventListener("change", updateUserName, false);

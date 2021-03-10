@@ -8,6 +8,7 @@ const paths = {
   outputPath,
   loginEntry: path.resolve(__dirname, '../src', 'login.ts'),
   gameEntry: path.resolve(__dirname, '../src', 'game.ts'),
+  carouselEntry: path.resolve(__dirname, '../src', 'carousel.ts'),
   srcPath: path.resolve(__dirname, '../src'),
   assetPath: path.resolve(__dirname, '../src', 'assets'),
   publicPath,

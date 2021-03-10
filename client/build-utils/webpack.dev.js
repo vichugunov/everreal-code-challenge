@@ -1,4 +1,5 @@
 const commonPaths = require('./common-paths')
+const webpack = require('webpack')
 
 module.exports = env => {
   return {
@@ -11,6 +12,7 @@ module.exports = env => {
       historyApiFallback: true,
       hot: true,
       open: true,
+      inline: true,
       overlay: true,
       port: 8000,
       stats: {

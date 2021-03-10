@@ -77,11 +77,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GameStat'
-  /games/new:
-    get:
+    post:
       tags:
         - Game
       summary: generate a new game
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: optional game name
       responses:
         '200':
           description: OK

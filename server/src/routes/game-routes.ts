@@ -5,12 +5,6 @@ import { generateUserGame, recordUserMove, getGame, solveGame, getGameIds, getCo
 
 const router = Express.Router()
 
-
-router.get('/new', authMiddleware(), (req, res) => {
-  const game = generateUserGame()
-  res.send(game)
-})
-
 router.post('/:gameId/move', authMiddleware(), (req, res) => {
   const gameId = req.params.gameId
   const { color } = req.body
@@ -63,6 +57,12 @@ router.get('/', authMiddleware(), (req, res) => {
   })
 
   res.send(gameStats)
+})
+
+router.post('/', authMiddleware(), (req, res) => {
+  const { name } = req.body
+  const game = generateUserGame(name)
+  res.send(game)
 })
 
 export default router

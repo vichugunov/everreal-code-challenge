@@ -8,6 +8,7 @@ module.exports = env => {
   return {
     entry: {
         login: commonPaths.loginEntry,
+        carousel: commonPaths.carouselEntry,
         game: commonPaths.gameEntry
     },
     resolve: {
@@ -58,6 +59,7 @@ module.exports = env => {
     },
     devtool: 'eval-source-map',
     plugins: [
+      new webpack.HotModuleReplacementPlugin(),
       new webpack.DefinePlugin({
         "ApiBaseUrl": JSON.stringify(getBaseUrl(env))
       }),
@@ -73,9 +75,17 @@ module.exports = env => {
       new HtmlWebpackPlugin({
         hash: true,
         title: 'EverReal Code Challenge',
+        myPageHeader: 'Carousel',
+        template: path.resolve(commonPaths.publicPath, 'game-carousel.html'),
+        filename: 'game-carousel.html',
+        chunks: [ 'carousel' ]
+      }),
+      new HtmlWebpackPlugin({
+        hash: true,
+        title: 'EverReal Code Challenge',
         myPageHeader: 'Game',
-        template: path.resolve(commonPaths.publicPath, 'game.html'),
-        filename: 'game.html',
+        template: path.resolve(commonPaths.publicPath, 'game-overview.html'),
+        filename: 'game-overview.html',
         chunks: [ 'game' ]
       })
     ],
