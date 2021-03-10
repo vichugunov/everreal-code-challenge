@@ -1,2 +1,2 @@
-export * from './carousel'
+export * from './game'
 export * from './constants'

@@ -17,6 +17,17 @@ router.post('/:gameId/move', authMiddleware(), (req, res) => {
   }
 })
 
+router.get('/:gameId/setup', authMiddleware(), (req, res) => {
+  const gameId = req.params.gameId
+
+  try {
+    const game = getGame(gameId)
+    res.send({ board: game.board, connectedVertices: getConnectedVertices(game.board) })
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+})
+
 router.get('/:gameId/history', authMiddleware(), (req, res) => {
   const gameId = req.params.gameId
 
@@ -35,6 +46,17 @@ router.get('/:gameId/ai-solution-steps', authMiddleware(), async (req, res) => {
   try {
     const aiSteps = await solveGame(gameId)
     res.send(aiSteps)
+  } catch (e) {
+    res.status(400).send(e.message)
+  }
+})
+
+router.get('/:gameId', authMiddleware(), async (req, res) => {
+  const gameId = req.params.gameId
+
+  try {
+    const game = getGame(gameId)
+    res.send(game)
   } catch (e) {
     res.status(400).send(e.message)
   }

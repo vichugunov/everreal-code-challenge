@@ -1,0 +1,81 @@
+<div class="bd-example bd-example-tabs">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link active show" id="home-tab" data-toggle="tab" href="#user" role="tab" aria-controls="home" aria-selected="true">User</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#ai" role="tab" aria-controls="profile" aria-selected="false">AI</a>
+    </li>
+  </ul>
+  <div class="tab-content" id="myTabContent">
+    <div class="tab-pane fade active show" id="user" role="tabpanel" aria-labelledby="home-tab">
+      <div class="d-flex">
+        <div style="text-align: center;">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <h4>Before</h4>
+              <canvas width="300" height="300" id="user-before-canvas"></canvas>
+            </div>
+            <span class="material-icons" style="font-size: 4em">
+              update
+            </span>
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <h4>After</h4>
+              <canvas width="300" height="300" id="user-after-canvas"></canvas>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column justify-content-center align-items-center">
+            <div class="d-flex justify-content-center align-items-center" style="margin-top: 10px;">
+              <span>Your move&nbsp;&nbsp;</span>
+              <div class="color-picker">
+              </div>
+            </div>
+            <button class="btn btn-primary mt-2" id="submit-move-btn">Submit move</button>
+          </div>
+        </div>
+        <div class="panel panel-primary flex-grow-1" id="result_panel">
+          <div class="panel-heading" style="text-align: center">
+            <h4 class="panel-title">Moves</h4>
+          </div>
+          <div class="panel-body">
+              <ul class="list-group" id="user-moves-list">
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tab-pane fade" id="ai" role="tabpanel" aria-labelledby="profile-tab">
+      <div class="d-flex">
+        <div style="text-align: center;">
+          <div class="d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <h4>Before</h4>
+              <canvas width="300" height="300" id="ai-before-canvas"></canvas>
+            </div>
+            <span class="material-icons" style="font-size: 4em">
+              update
+            </span>
+            <div class="d-flex flex-column justify-content-center align-items-center">
+              <h4>After</h4>
+              <canvas width="300" height="300" id="ai-after-canvas"></canvas>
+            </div>
+          </div>
+
+          <div class="d-flex flex-column justify-content-center align-items-center">
+            <button class="btn btn-primary mt-2" style="margin-top: 10px;" id="solve-game-btn">Solve the game</button>
+          </div>
+        </div>
+        <div class="panel panel-primary flex-grow-1" id="result_panel">
+          <div class="panel-heading" style="text-align: center">
+            <h4 class="panel-title">Moves</h4>
+          </div>
+          <div class="panel-body">
+              <ul class="list-group" id="ai-moves-list">
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

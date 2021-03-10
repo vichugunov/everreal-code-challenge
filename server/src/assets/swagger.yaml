@@ -97,6 +97,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Game'
+  /games/{gameId}:
+    get:
+      tags:
+        - Game
+      summary: get game info
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Game'
   /games/{gameId}/move:
     post:
       tags:
@@ -147,6 +161,34 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/GameMove'
+        '400':
+          $ref:  "#/components/responses/BadRequest"
+  /games/{gameId}/setup:
+    get:
+      tags:
+        - Game
+      parameters:
+        - in: path
+          name: gameId
+          required: true
+          schema:
+            $ref: '#/components/schemas/GameId'
+      summary: get game initial setup - board & connected vertices
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - board
+                  - connectedVertices
+                properties:
+                  board:
+                    $ref: '#/components/schemas/GameBoard'
+                  connectedVertices:
+                    $ref: '#/components/schemas/ConnectedVertices'
         '400':
           $ref:  "#/components/responses/BadRequest"
   /games/{gameId}/ai-solution-steps:
@@ -212,12 +254,15 @@ components:
         - result
         - isGameComplete
         - connectedBeforeApply
+        - connectedAfterApply
       properties:
         result:
           $ref: '#/components/schemas/GameBoard'
         isGameComplete:
           type: boolean
         connectedBeforeApply:
+          $ref: '#/components/schemas/ConnectedVertices'
+        connectedAfterApply:
           $ref: '#/components/schemas/ConnectedVertices'
     Game:
       type: object
